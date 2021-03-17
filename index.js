@@ -4,21 +4,22 @@ const axios = require('axios').default;
 const app = express() // the main app
 const admin = express() // the sub app
 
-const port = process.env.PORT || 3005;
+const port = process.env.PORT || 3000;
 
 const endpoint = 'https://api.etherscan.io/api?module=proxy&action=eth_getTransactionByHash&txhash=';
 
 app.get('/', async (req, res) => {
-    res.setHeader('Content-Type', 'application/json');
+    try {
+        res.setHeader('Content-Type', 'application/json');
     
-    const response = await axios.get(`${endpoint}${req.query.tx}`);
-    
-    const from = response.data.result.from.replace('0x', '');
-    
-    const addressToBytes32 = '0x' + from.padStart(64, '0');
-    const addressToInt = parseInt(response.data.result.from);
+        const response = await axios.get(`${endpoint}${req.query.tx}`);
+        const from = response.data.result.from;
+        const isOwner = from.toLowerCase() === req.query.address.toLowerCase();
 
-    res.send({ addressToBytes32,  addressToInt });
+        res.send({ isOwner});
+    } catch (e) {
+        res.send({ isOwner: false, e });
+    }
 });
 
 app.listen(port, function () {

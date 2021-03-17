@@ -4,6 +4,8 @@ const axios = require('axios').default;
 const app = express() // the main app
 const admin = express() // the sub app
 
+const port = process.env.PORT || 3005;
+
 const endpoint = 'https://api.etherscan.io/api?module=proxy&action=eth_getTransactionByHash&txhash=';
 
 app.get('/', async (req, res) => {
@@ -19,6 +21,6 @@ app.get('/', async (req, res) => {
     res.send({ addressToBytes32,  addressToInt });
 });
 
-app.listen(3000, function () {
+app.listen(port, function () {
     console.log('Ready');
 });

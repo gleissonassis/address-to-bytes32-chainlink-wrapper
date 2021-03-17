@@ -1,8 +1,7 @@
 const express = require('express');
 const axios = require('axios').default;
 
-const app = express() // the main app
-const admin = express() // the sub app
+const app = express();
 
 const port = process.env.PORT || 3000;
 
